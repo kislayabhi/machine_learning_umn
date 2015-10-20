@@ -1,3 +1,4 @@
+tic;
 % Input
 % C
 % tol
@@ -11,8 +12,8 @@
 %labels_40=data(1:40,1);
 
 % Take the whole training set
-data_40=data(1:300,2:end);
-labels_40=data(1:300,1);
+data_40=data(1:1000,2:end);
+labels_40=data(1:1000,1);
 labels_40(labels_40==3)=-1;
 
 % Initialize alpha array to all zero
@@ -61,8 +62,8 @@ while passes<max_passes
         % I have assumed linear kernel function for now.
         % Error on the current data.
         
-        %E1 = data_40(i,:)*w' + b - labels_40(i);
-        E1 = data_40(i,:)*w' - labels_40(i);
+        E1 = data_40(i,:)*w' + b - labels_40(i);
+        %E1 = data_40(i,:)*w' - labels_40(i);
 
         % Proceed only for non-bound data-points that violate KKT.
         curr_label = labels_40(i);
@@ -73,7 +74,7 @@ while passes<max_passes
             % Now we just have to find the another point
 
             % Search over all j
-            for j=1:length(labels_40) 
+            for j=1:length(labels_40)
 
                 % We don't want i and j to be the same.
                 % There is more to the 2nd choice Heuristics. 
@@ -113,8 +114,8 @@ while passes<max_passes
 
                     % Error on the current data.
                     
-                    %E2 = x2*w' + b - y2;
-                    E2 = x2*w' - y2;
+                    E2 = x2*w' + b - y2;
+                    %E2 = x2*w' - y2;
 
                     alpha1_old=alpha(i);
                     alpha2_old=alpha(j);
@@ -162,7 +163,8 @@ while passes<max_passes
                      s = y1*y2;
                      alpha1_new = alpha1_old + s*(alpha2_old-alpha2_new);
                      alpha(i) = alpha1_new;
-
+                     
+                     
                      % Solving for the Langrange multipliers alpha does not
                      % determine the threshold b of SVM, so b must be computed
                      % separately. After each step, b is re-computed so that
@@ -182,8 +184,9 @@ while passes<max_passes
                      end
 
                      num_changed_alphas = num_changed_alphas+1;
-
+                     
                 end
+                
             end
 
         end
@@ -196,7 +199,7 @@ while passes<max_passes
    
     
 end
-
+toc;
 % Calculate the final W
 totalSum = 0;
 for i=1:length(labels_40)
