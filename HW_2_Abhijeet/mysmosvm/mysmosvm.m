@@ -32,17 +32,18 @@ global b;
 global iter;
 global result;
 
-
-data_40=data(1:100,2:end);
-labels_40=data(1:100,1);
+result=0;
+data_40=data(:,2:end);
+labels_40=data(:,1);
 labels_40(labels_40==3)=-1;
+
+cc=hsv(numruns);
 
 for run=1:numruns
     
     tic;
     
     iter=0;
-
 
     % Initialize alpha array to all zero
     alpha=zeros(size(labels_40));
@@ -60,7 +61,7 @@ for run=1:numruns
     tol=0.001;
 
     % Initialize the penalty term
-    C=10;
+    C=2;
 
     % We keep on repeating the below while loop until
     % 1. examineAll==false
@@ -84,14 +85,18 @@ for run=1:numruns
             for i=1:length(labels_40)
                 % Remember, we are just giving the row number of the data.
                 numChanged = numChanged + examineExample(i);
+                %i
             end
+            %disp('The above was outer loop on examine all');
         % else we are interested in a subset only (non bound areas.)
         else
             % Loop over examples where alpha is not 0 and not C
             for i=1:length(support_vector_indices)
                 % Remember, we are just giving the row number of the data.
                 numChanged = numChanged + examineExample(support_vector_indices(i));
+                %i
             end
+            %disp('The above was outer loop on non-bound');
         end
         % After the above step, we expect the numChanged to increase.
 
@@ -112,7 +117,7 @@ for run=1:numruns
     %f=alpha;
 
     temp_result_data{run}=result;
-    plot(result,'b--*')
+    plot(result,'color', cc(run, :))
     hold on;
 
     timing_data(run)=toc;
@@ -122,7 +127,7 @@ ylabel('The dual objective') % y-axis label
 
 hold off;
 
-disp('The mean of time taken over numruns time(in secs):');
+fprintf('The mean of time taken over %d numruns (in secs):',numruns);
 disp(mean(timing_data));
 
 disp('The standard deviation for the above mean(in secs):');

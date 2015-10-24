@@ -12,8 +12,9 @@ tic;
 %labels_40=data(1:40,1);
 
 % Take the whole training set
-data_40=data(1:1000,2:end);
-labels_40=data(1:1000,1);
+
+data_40=data(1:300,2:end);
+labels_40=data(1:300,1);
 labels_40(labels_40==3)=-1;
 
 % Initialize alpha array to all zero

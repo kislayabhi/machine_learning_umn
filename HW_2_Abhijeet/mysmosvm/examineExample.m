@@ -11,7 +11,7 @@ global w x1 x2 y1 y2;
 global b;
 global alpha2 E2;
 
-%% Choose the 1st point.
+%% Choose the 1st point (x2).
 % Choosing the first point is based on violation of the KKT conditions.
 
 % Current Data
@@ -29,7 +29,7 @@ E2 = x2*w' + b - y2;
 % Find a non-bound example that violates the KKT.
 r2=E2*y2;
 
-%% Choose the 2nd point
+%% Choose the 2nd point(x1)
 if((r2 < -tol) && (alpha2<C)) || ((r2 > tol) && (alpha2>0))
     %% Heuristic 1
     if(length(support_vector_indices) > 1)
@@ -46,6 +46,7 @@ if((r2 < -tol) && (alpha2<C)) || ((r2 > tol) && (alpha2>0))
         % change alpha's via this step!
         if takeStep(row_idx1, row_idx2)==true
             one_if_changed=1;
+            %disp('Heuristic 1 works!')
             return;
         end
     end
@@ -57,6 +58,7 @@ if((r2 < -tol) && (alpha2<C)) || ((r2 > tol) && (alpha2>0))
         row_idx1=random_support_vector_indices(j);
         if takeStep(row_idx1, row_idx2)==true
             one_if_changed=1;
+            %disp('Heuristic 2 works!')
             return;
         end
     end
@@ -68,6 +70,7 @@ if((r2 < -tol) && (alpha2<C)) || ((r2 > tol) && (alpha2>0))
         row_idx1=random_labels(j);
         if takeStep(row_idx1, row_idx2)==true
             one_if_changed=1;
+            %disp('Heuristic 3 works!')
             return;
         end
     end

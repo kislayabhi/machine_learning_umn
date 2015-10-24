@@ -64,13 +64,16 @@ else
 end
 
 if a2<1e-8
+    %disp('a2 clipped to zero');
     a2=0;
 elseif a2>C-1e-8
+    %disp('a2 clipped to C');
     a2=C;
 end
 
-e=1e-3;
+e=1e-16;
 if abs(a2-alpha2) < e*(a2+alpha2+e)
+    %disp('very tiny change in alpha2. Chuck it');
     true_or_false=false;
     return;
 end
@@ -112,6 +115,10 @@ true_or_false=true;
 
 %% Find the dual objective function
 iter=iter+1;
-result(iter) = sum(alpha)-0.5*w*w';
+%disp('alpha updated');
+w = sum(repmat(alpha.*labels_40, 1, size(data_40,2)).*data_40);
+result(iter, :) = sum(alpha)-0.5*(w*w');
+%disp(sum(alpha)-0.5*(w*w'))
+
 end
 
